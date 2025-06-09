@@ -1,10 +1,30 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React, { Suspense } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter, Route, Routes } from 'react-router'
 
-import App from './App'
+import { RouteDefinition, routes } from './routes/routes'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+const root = createRoot(document.getElementById('root') as HTMLElement)
+function render(r: RouteDefinition) {
+  return (
+    <Suspense>
+      <r.element />
+    </Suspense>
+  )
+}
+
+root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        {routes.map((r) => (
+          <Route key={r.name} path={r.path} element={render(r)}>
+            {r.children?.map((c) => (
+              <Route key={c.name} path={c.path} element={render(c)} />
+            ))}
+          </Route>
+        ))}
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
 )
