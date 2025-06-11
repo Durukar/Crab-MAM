@@ -19,7 +19,7 @@ export const routes: RouteDefinition[] = [
   {
     name: 'home',
     path: '/',
-    element: lazy(() => import('../pages/login-page')),
+    element: lazy(() => import('../layouts/main-layout')),
   },
 ]
 
